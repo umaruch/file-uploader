@@ -1,0 +1,22 @@
+#server:
+#  port: 8080
+
+spring:
+  banner:
+    location: banner.txt
+    charset: utf-8
+
+minio:
+  address: "http://localhost:9000"
+  username: "restclient"
+  password: "testclient"
+
+upload:
+  formats:
+    avatars:
+      width: 128
+      height: 128
+    covers:
+      width: 310
+      height: 500
+
