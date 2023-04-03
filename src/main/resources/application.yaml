@@ -1,5 +1,6 @@
-#server:
-#  port: 8080
+logging:
+  file:
+    path: logs
 
 spring:
   banner:
@@ -7,16 +8,17 @@ spring:
     charset: utf-8
 
 minio:
-  address: "http://localhost:9000"
-  username: "restclient"
-  password: "testclient"
+  address: "http://localhost:9090"
+  accessKey: "W8Jvj22cKJ6wTuTM"
+  secretKey: "JDKKgnNNWywVjupNFOkUOfDsMlR6ep0D"
 
 upload:
-  formats:
+  types:
     avatars:
+      format: "png"
       width: 128
       height: 128
     covers:
+      format: "jpg"
       width: 310
       height: 500
-

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "minio")
 public class MinioConfiguration {
     private String address;
-    private String username;
-    private String password;
+    private String accessKey;
+    private String secretKey;
 
     public String getAddress() {
         return address;
@@ -19,19 +19,19 @@ public class MinioConfiguration {
         this.address = address;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccessKey() {
+        return accessKey;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSecretKey() {
+        return secretKey;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }
