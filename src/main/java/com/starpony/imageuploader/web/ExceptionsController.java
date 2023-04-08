@@ -1,7 +1,6 @@
-package com.starpony.imageuploader;
+package com.starpony.imageuploader.web;
 
-import com.starpony.imageuploader.dto.ErrorDTO;
-import com.starpony.imageuploader.errors.UploadFileRequestException;
+import com.starpony.imageuploader.web.dto.ErrorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionsController {
     private static Logger LOGGER = LoggerFactory.getLogger(ExceptionsController.class);
 
-    @ExceptionHandler({UploadFileRequestException.class})
+    @ExceptionHandler({NoSuchFieldException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorDTO handleUploadFileRequestException(RuntimeException ex) {
         LOGGER.warn(ex.getMessage());

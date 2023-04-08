@@ -7,18 +7,24 @@ spring:
     location: banner.txt
     charset: utf-8
 
-minio:
-  address: "http://localhost:9090"
-  accessKey: "W8Jvj22cKJ6wTuTM"
-  secretKey: "JDKKgnNNWywVjupNFOkUOfDsMlR6ep0D"
+#----------------------------------------------------------------
+configuration:
+  # Настройки хранилища изображений
+  storage:
+#    minio:
+#      address: "http://localhost:9090"
+#      accessKey: "W8Jvj22cKJ6wTuTM"
+#      secretKey: "JDKKgnNNWywVjupNFOkUOfDsMlR6ep0D"
+    local:
+      path: "media"
 
-upload:
-  types:
+  # Настройка директорий и формата для итоговых изображений
+  formats:
     avatars:
-      format: "png"
+      type: "png"
       width: 128
       height: 128
     covers:
-      format: "jpg"
+      type: "jpg"
       width: 310
       height: 500

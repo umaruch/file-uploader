@@ -1,4 +1,4 @@
-package com.starpony.imageuploader.dto;
+package com.starpony.imageuploader.web.dto;
 
 public class ErrorDTO {
     private final String detail;
