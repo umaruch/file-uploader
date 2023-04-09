@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 public class MainController {
-    private static Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
     private final ImagesService imagesService;
 
@@ -34,6 +34,7 @@ public class MainController {
             String imageURL = imagesService.resizeAndSave(path, image.getInputStream());
             return new SavedImageDTO(imageURL);
         } catch (IOException e) {
+            LOGGER.error("");
             throw new RuntimeException(e);
         }
     }

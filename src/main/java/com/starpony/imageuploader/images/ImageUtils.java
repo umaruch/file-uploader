@@ -1,16 +1,16 @@
-package com.starpony.imageuploader.utils;
+package com.starpony.imageuploader.images;
 
-import com.starpony.imageuploader.Configuration;
+import com.starpony.imageuploader.images.models.ImageFormat;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 
-
 import java.io.*;
 
+
 public class ImageUtils {
-    public static ByteArrayInputStream resize(InputStream stream, Configuration.ImageFormat format) throws Exception{
+    public static ByteArrayInputStream resize(InputStream stream, ImageFormat format) throws Exception{
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             Thumbnails.of(stream).crop(Positions.CENTER).size(format.getWidth(), format.getHeight())

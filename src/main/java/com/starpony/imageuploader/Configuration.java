@@ -1,5 +1,6 @@
 package com.starpony.imageuploader;
 
+import com.starpony.imageuploader.images.models.ImageFormat;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -21,46 +22,19 @@ public class Configuration {
         this.formats = formats;
     }
 
-    public String getStorageType() {
-        return storage.keySet().stream().findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Image storage configuration not found"));
-    }
-
     public Map<String, String> getStorageConfiguration(String storageType) {
-        return storage.get(storageType);
+        Map<String, String> storageConfig = storage.get(storageType);
+        if (storageConfig == null)
+            throw new NoSuchElementException("Storage configuration not found");
+
+        return storageConfig;
     }
 
     public ImageFormat getFormat(String path) {
-        return formats.get(path);
-    }
+        ImageFormat imageFormat = formats.get(path);
+        if (imageFormat == null)
+            throw new NoSuchElementException("Image format not found");
 
-    public static class ImageFormat {
-        private String type;
-        private int width;
-        private int height;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public void setHeight(int height) {
-            this.height = height;
-        }
+        return imageFormat;
     }
 }
