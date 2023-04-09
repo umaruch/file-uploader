@@ -1,13 +1,3 @@
-logging:
-  file:
-    path: logs
-
-spring:
-  banner:
-    location: banner.txt
-    charset: utf-8
-
-#----------------------------------------------------------------
 configuration:
   # Настройки хранилища изображений
   storage:
