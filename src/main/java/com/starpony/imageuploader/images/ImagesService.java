@@ -1,7 +1,7 @@
 package com.starpony.imageuploader.images;
 
 import com.starpony.imageuploader.Configuration;
-import com.starpony.imageuploader.images.errors.ImageFormatNotFound;
+import com.starpony.imageuploader.images.errors.ImagesException;
 import com.starpony.imageuploader.images.models.ImageFormat;
 import com.starpony.imageuploader.images.repositories.ImageRepository;
 
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
@@ -36,37 +35,25 @@ public class ImagesService {
      * @param imageStream стрим входного изображения
      * @return URL сохраненного изображения
      */
-    public String resizeAndSave(String path, InputStream imageStream) {
+    public String resizeAndSave(String path, InputStream imageStream) throws ImagesException {
         return save(path, resize(path, imageStream));
     }
 
-    private InputStream resize(String path, InputStream imageStream) {
-        ImageFormat imageFormat = getPathImageFormat(path);
-        try {
-            return ImageUtils.resize(imageStream, imageFormat);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    private InputStream resize(String path, InputStream imageStream) throws ImagesException {
+        return ImageUtils.resize(imageStream, getPathImageFormat(path));
     }
 
-    private String save(String path, InputStream imageStream) {
+    private String save(String path, InputStream imageStream) throws ImagesException {
         ImageFormat imageFormat = getPathImageFormat(path);
         String filename = String.format("%s.%s", UUID.randomUUID(), imageFormat.getType());
-        try {
-            imageRepository.save(path, filename, imageStream);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        imageRepository.save(path, filename, imageStream);
 
         return String.format("/%s/%s", path, filename);
     }
 
-    private ImageFormat getPathImageFormat(String path) {
-        try {
-            return configuration.getFormat(path);
-        } catch (NoSuchElementException ex) {
-            LOGGER.error("File format not found by path in application.yaml");
-            throw new ImageFormatNotFound();
-        }
+    private ImageFormat getPathImageFormat(String path) throws ImagesException {
+        return configuration.getFormat(path).orElseThrow(
+                () -> new ImagesException(String.format("Path \"%s\" not found", path)));
     }
 }

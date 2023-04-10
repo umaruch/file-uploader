@@ -3,11 +3,15 @@ package com.starpony.imageuploader.images.repositories;
 import com.starpony.imageuploader.Configuration;
 
 import io.minio.*;
+import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 
@@ -33,7 +37,7 @@ public class MinioImageRepository implements ImageRepository {
                     .contentType("image/jpeg")
                     .stream(inputStream, -1, 10485760)
                     .build());
-        } catch (Exception ex) {
+        } catch (MinioException | IOException | InvalidKeyException | NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }
     }

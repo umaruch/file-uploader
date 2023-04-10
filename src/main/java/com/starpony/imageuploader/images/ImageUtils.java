@@ -1,5 +1,6 @@
 package com.starpony.imageuploader.images;
 
+import com.starpony.imageuploader.images.errors.ImagesException;
 import com.starpony.imageuploader.images.models.ImageFormat;
 
 import net.coobird.thumbnailator.Thumbnails;
@@ -10,18 +11,16 @@ import java.io.*;
 
 
 public class ImageUtils {
-    public static ByteArrayInputStream resize(InputStream stream, ImageFormat format) throws Exception{
+    public static ByteArrayInputStream resize(InputStream stream, ImageFormat format) throws ImagesException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             Thumbnails.of(stream).crop(Positions.CENTER).size(format.getWidth(), format.getHeight())
                     .keepAspectRatio(true).outputFormat(format.getType()).toOutputStream(outputStream);
         } catch (UnsupportedFormatException ex) {
-            throw new IncorrectInputFileType();
+            throw new ImagesException("The image must be in format .png, .jpg or jpeg");
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
         return new ByteArrayInputStream(outputStream.toByteArray());
-    }
-
-    //  Ошибка, говорящая о том что входной поток не является изображением
-    public static class IncorrectInputFileType extends Exception {
     }
 }

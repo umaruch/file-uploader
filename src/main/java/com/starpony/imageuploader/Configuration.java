@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Component
@@ -23,18 +24,10 @@ public class Configuration {
     }
 
     public Map<String, String> getStorageConfiguration(String storageType) {
-        Map<String, String> storageConfig = storage.get(storageType);
-        if (storageConfig == null)
-            throw new NoSuchElementException("Storage configuration not found");
-
-        return storageConfig;
+        return storage.get(storageType);
     }
 
-    public ImageFormat getFormat(String path) {
-        ImageFormat imageFormat = formats.get(path);
-        if (imageFormat == null)
-            throw new NoSuchElementException("Image format not found");
-
-        return imageFormat;
+    public Optional<ImageFormat> getFormat(String path) {
+        return Optional.ofNullable(formats.get(path));
     }
 }

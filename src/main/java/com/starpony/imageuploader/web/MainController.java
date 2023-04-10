@@ -1,6 +1,7 @@
 package com.starpony.imageuploader.web;
 
 import com.starpony.imageuploader.Configuration;
+import com.starpony.imageuploader.images.errors.ImagesException;
 import com.starpony.imageuploader.web.dto.SavedImageDTO;
 import com.starpony.imageuploader.images.ImagesService;
 
@@ -26,16 +27,10 @@ public class MainController {
 
     @PostMapping(path = "/upload/{path}")
     public SavedImageDTO uploadImage(@PathVariable String path,
-                                 @RequestParam MultipartFile image){
+                                 @RequestParam MultipartFile image) throws IOException, ImagesException {
 
         LOGGER.info(String.format("[/upload/%s] Upload file %s", path, image.getOriginalFilename()));
 
-        try {
-            String imageURL = imagesService.resizeAndSave(path, image.getInputStream());
-            return new SavedImageDTO(imageURL);
-        } catch (IOException e) {
-            LOGGER.error("");
-            throw new RuntimeException(e);
-        }
+        return new SavedImageDTO(imagesService.resizeAndSave(path, image.getInputStream()));
     }
 }

@@ -29,5 +29,6 @@ public class LocalImageRepository implements ImageRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 }
