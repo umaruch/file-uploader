@@ -2,18 +2,18 @@ configuration:
   # Настройки хранилища изображений
   storage:
     minio:
-      enabled: true
+      enabled: false
       address: "http://localhost:9090"
       accessKey: "W8Jvj22cKJ6wTuTM"
       secretKey: "JDKKgnNNWywVjupNFOkUOfDsMlR6ep0D"
     local:
-      enabled: false
+      enabled: true
       path: "media"
 
   # Настройка директорий и формата для итоговых изображений
   formats:
     avatars:
-      type: "png"
+      type: "jpg"
       width: 128
       height: 128
     covers:
