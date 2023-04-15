@@ -5,29 +5,35 @@ import com.starpony.imageuploader.images.models.ImageFormat;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.*;
 
 
 public class ImageUtils {
-    public static ByteArrayInputStream resize(InputStream stream, ImageFormat format) throws ImagesException {
-
+    public static ByteArrayInputStream processImage(InputStream stream, ImageFormat format) throws ImagesException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            BufferedImage croppedImage = cropImage(ImageIO.read(stream), format);
-            BufferedImage resultImage = new BufferedImage(
-                    format.getWidth(), format.getHeight(), BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics2D = resultImage.createGraphics();
-            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics2D.drawImage(croppedImage, 0, 0, format.getWidth(), format.getHeight(), null);
-            graphics2D.dispose();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BufferedImage resultImage = resizeImage(
+                    cropImage(ImageIO.read(stream), format), format);
             ImageIO.write(resultImage, format.getType(), outputStream);
-            return new ByteArrayInputStream(outputStream.toByteArray());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return new ByteArrayInputStream(outputStream.toByteArray());
+    }
+
+
+    /*
+        Сжатие изображения до значений, указанных в формате
+     */
+    private static BufferedImage resizeImage(BufferedImage sourceImage, ImageFormat format) {
+        BufferedImage resultImage = new BufferedImage(
+                format.getWidth(), format.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resultImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.drawImage(sourceImage, 0, 0, format.getWidth(), format.getHeight(), null);
+        graphics2D.dispose();
+        return resultImage;
     }
 
     /*
